@@ -1,26 +1,44 @@
-import React from 'react';
-import logo from './logo.svg';
+import React, { Component } from "react";
 import './App.css';
+import {connect} from "react-redux";
+import {actGetItem} from "./actions/action"
+import TEST from "./component/test"
+class App extends Component {
+  
+ _getItem=()=>{
+  this.props.getItem();
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+ }
+  render() {
+    const {todos} =  this.props;
+    console.log(todos);
+    return (
+      <div className="view_App">
+        <div> <button onClick={this._getItem}>Get Item</button></div>
+        <TEST/>
+          {/* <div>
+          <ul>
+              {todos&&todos.map((props,index)=>{
+                 return <li key={index}>Name : {props.name} - AGE: {props.age}</li>
+              })}
+          </ul>
+          </div> */}
+      </div>
+    );
+  }
 }
 
-export default App;
+const mapStateToProps = state => {
+  return {
+    todos: state.getItem
+  }
+}
+const mapDispatchToProps = dispatch => {
+  return {
+    getItem:() => {
+      dispatch(actGetItem())
+    }
+  }
+}
+
+export default connect(mapStateToProps,mapDispatchToProps )(App);
